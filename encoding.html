@@ -1,0 +1,22 @@
+<script>
+    (async() => {
+        let toEncode = "Hello, everyone! This is the LONGES"
+        let asciiEncodedArray = new TextEncoder().encode(toEncode)
+        const algorithm = {
+            name: 'AES-GCM',
+            length: 128
+            }
+        const settings = {
+            name: 'AES-GCM',
+            iv: new Uint8Array([109, 182, 106, 199, 109, 135, 217, 152, 253, 55, 47, 35, 26, 88, 128, 231])
+            }
+        const key = await crypto.subtle.generateKey(algorithm, true, ["encrypt", "decrypt"])
+        const shareableKey = await crypto.subtle.exportKey('jwk', key)
+        const ciphertext = await crypto.subtle.encrypt(settings, key, asciiEncodedArray)
+        const encryptedBufferToString = Array
+            .from(new Uint8Array(ciphertext))
+            .map(byte => String.fromCharCode(byte)).join('')
+        const toTransfer = btoa(encryptedBufferToString + "|" + JSON.stringify(shareableKey))
+        console.log(toTransfer)
+    })()
+</script>

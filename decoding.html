@@ -1,0 +1,19 @@
+<script>
+    (async() => {
+        let toDecode = "vk+E5U7iSIuiP+X5nTopfch7OxPe3e6syt4BfNq0mRJJ3hLyUcjIDm3Ykyyle4eVGH6iJJ/3/z/137DbkZHlZdYirShwGW/ybdToFyAnkPGdGO7NclrqUrSaYDVjT++bbYIyDwm0eQ2GRsZqGozxIWyDckJ+62yHHPrriy9mCLSDhKOFBOMJ+mXHLh/om7qhskWQd/+mgOPFMcagb1bS8zK/REtZUoff0qtNHiGzi4GQG6aphrvx81NIr2/SdnY5XSzfMGvnpwLBv9xSn8MvANxBRUaR3HtZOfqyN2hNHUej+lt6ZFVAWnuQq2iJX27wBYaogqW50gsEu9HStjeQX435X+1We4ejhEZGQKneF1vILoHtBTodaUmbE0B7ZIeRG9LWcCRLOFTq5+DgvvVpK8IeNSZgEDG8/DBlsljlZ1E5ZQog0lx5akdVpmJ/17491qIv5ZA5/f4Yf2QHEA/Xh0Iiu4rwKiFv1FtFKkPhc7pvGVmV2MxQBSrXP0BRz/SLr8z1Vi7OhDghBV/LZlt+aL68A2xck1pfSIZyVN0Y9688C6HjENfFZ/a60TQ9pbybaKDKR7UiW/PUxYuJquE/ZiJXAfwoDwnx+oUn6E0SlyYZIuiU3PiZNKdO++zRUPe+vSe4AuS8WRZvf8BcKzsMfHHgMZ1I5IXYB5RhcrcwA+vCq0yU/C/qG/UPxXEWFgN78Fw42tS0khFH3GZgpePfs6DoMN6tjvO3J0bnqiMFHUF/e+i7Pzhj+rpLSwiPiXNk1aN+0I5wB48tlr2yBphObxxPxwgpLKXVa+W6mEOv903aIIFs5wX6VVsK1ZbhxH3fC26Jb/1b/0rFmQ3E91kZxF6MeFj6SnMkGLfqInQ+cIrmi2nVqGkdHx+zy/jBnVoKJLGPAywaEBlrsKdZ5EeafMLKbv7AlfIYWE2LijAm828KM0yPDnjtQ11acuqa49sR23d9sasdHNpvc3MAPJ1wC/55zkgO+lsuTzu3qHqQBBWaas23RxBfubTXrJLoF5Q1io1Jvfe2I4MSJFVBKmIfwaAoMwz322IUxrZwZ/0kUwq8j//bRSDKJCBk1ilVfsUPf5EQzCJto38fJ0Qbjkxp+tcNgMxjbDeR/vU1J2giN+xPgtp9w09tc1lXDwyiOBbXTrf8rE+406XG+whWOQwzJi2OwYImtKUXY3ylsNLLiJ59uuOJFT6AYQsmuCDfVezKk23BRwcvI8K+EU3Rys11MlZhuRwdelMUb1qmLbhOZ/5ruKVkvOjS8zdlfYjMDNRqn0gAIx8rRjz8TsuvRPPirk3hx3Ee+q9arVUELO1GaFpX67ThpUspCe3cFDgtKP0IthC3ooEOPdyiDAHwhdqX57Lo1UT3xqE2vTwgS/14uSt/qKG8wzl3EcYrQyZIKSmWIpVZeLTtAG3EssKO0kt2OWxhE0+d1ssOKJlW8g5D2dLWL92b1RiON/tq9J4O2MLZp2Y4Fr4MJo9sgboCWWT7dSZsUmquT38gJiV00I5p8eyJhbGciOiJBMTI4R0NNIiwiZXh0Ijp0cnVlLCJrIjoiV3YwdnhkMWxtRnczUzNTTWVneXZYZyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0="
+        const algorithm = {
+            name: 'AES-GCM',
+            length: 128
+            }
+        const settings = {
+            name: 'AES-GCM',
+            iv: new Uint8Array([109, 182, 106, 199, 109, 135, 217, 152, 253, 55, 47, 35, 26, 88, 128, 231])
+            }
+        const [encryptedBufferToString, shareableKey] = atob(toDecode).split("|")
+        const ciphertext = new Uint8Array(encryptedBufferToString.match(/[\s\S]/g).map(ch => ch.charCodeAt(0)))
+        const key = await crypto.subtle.importKey('jwk', JSON.parse(shareableKey), algorithm, false, ["decrypt"])
+        const decrypted = await crypto.subtle.decrypt(settings, key, ciphertext)
+        const decodedMessage = new TextDecoder().decode(decrypted)
+        console.log(decodedMessage)
+    })()
+</script>

@@ -1,6 +1,6 @@
 <script>
     (async() => {
-        let toEncode = "Hello, everyone! This is the LONGES"
+        let toEncode = "Hello, everyone! This is the a text to encode"
         let asciiEncodedArray = new TextEncoder().encode(toEncode)
         const algorithm = {
             name: 'AES-GCM',
@@ -8,6 +8,7 @@
             }
         const settings = {
             name: 'AES-GCM',
+            // get it by running crypto.getRandomValues(new Uint8Array(16)) in browser
             iv: new Uint8Array([109, 182, 106, 199, 109, 135, 217, 152, 253, 55, 47, 35, 26, 88, 128, 231])
             }
         const key = await crypto.subtle.generateKey(algorithm, true, ["encrypt", "decrypt"])
